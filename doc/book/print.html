@@ -1,0 +1,570 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">README</a></li><li class="chapter-item expanded affix "><li class="part-title">API Reference</li><li class="chapter-item expanded "><a href="python_apibook.html"><strong aria-hidden="true">1.</strong> python_apibook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="python_apibook.main.html"><strong aria-hidden="true">1.1.</strong> main</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><div>Death to sphinx!</div></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="readme"><a class="header" href="#readme">README</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="package-python_apibook"><a class="header" href="#package-python_apibook">package <code>python_apibook</code></a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="module-python_apibookmain"><a class="header" href="#module-python_apibookmain">module <code>python_apibook.main</code></a></h1>
+<p>Generates markdown from Python docstrings.</p>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<pre><code class="language-python">def root_module(root) -&gt; str
+</code></pre>
+<p>Get the root module name from a path.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>root(str)</code>: the root path</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li>the root module name</li>
+</ul>
+<pre><code class="language-python">def path_to_module(root, file) -&gt; str
+</code></pre>
+<p>Convert a path to a module name.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>root(str)</code>: the parent directory of the file</li>
+<li><code>file(str)</code>: the module name</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li>the dotted module name</li>
+</ul>
+<pre><code class="language-python">def fixup_reexports(root_module, docs) -&gt; None
+</code></pre>
+<p>Inlines items that are reexported from other modules via '<strong>all</strong>'
+lists.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>root_module(str)</code></li>
+<li><code>docs(dict[str, Module])</code></li>
+</ul>
+<pre><code class="language-python">def run(root_dir, output_dir, summary_output_template) -&gt; None
+</code></pre>
+<p>Run the docstring generator.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>root_dir(str)</code></li>
+<li><code>output_dir(str)</code></li>
+<li><code>summary_output_template(str | None)</code></li>
+</ul>
+<h2 id="classes"><a class="header" href="#classes">Classes</a></h2>
+<h3 id="class-signature"><a class="header" href="#class-signature"><code>class Signature:</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="fields"><a class="header" href="#fields">Fields</a></h4>
+<ul>
+<li>
+<p><code>args</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>returns</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>docstring</code>: <code>str</code></p>
+</li>
+</ul>
+</div>
+<h3 id="class-args"><a class="header" href="#class-args"><code>class Args:</code></a></h3>
+<div style="padding-left: 20px;">
+<p>Class to hold command line arguments.</p>
+<h4 id="fields-1"><a class="header" href="#fields-1">Fields</a></h4>
+<ul>
+<li>
+<p><code>root_dir</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>output_dir</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>summary_template_file</code>: <code>str | None</code> = <code>&lt;ast.Constant object at 0x7fde61960730&gt;</code></p>
+</li>
+</ul>
+<h4 id="methods"><a class="header" href="#methods">Methods</a></h4>
+<pre><code class="language-python">def parse() -&gt; Args
+</code></pre>
+<p>Parse command line arguments.</p>
+</div>
+<h3 id="class-class"><a class="header" href="#class-class"><code>class Class:</code></a></h3>
+<div style="padding-left: 20px;">
+<p>Class to hold class information.</p>
+<h4 id="fields-2"><a class="header" href="#fields-2">Fields</a></h4>
+<ul>
+<li>
+<p><code>name</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>bases</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>methods</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>fields</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>docstring</code>: <code>str</code></p>
+</li>
+</ul>
+<h4 id="methods-1"><a class="header" href="#methods-1">Methods</a></h4>
+<pre><code class="language-python">def to_md(self) -&gt; None
+</code></pre>
+<p>Convert class to markdown.</p>
+<p><strong>Arguments</strong>:</p>
+</div>
+<h3 id="class-method"><a class="header" href="#class-method"><code>class Method:</code></a></h3>
+<div style="padding-left: 20px;">
+<p>Class to hold method information.</p>
+<h4 id="fields-3"><a class="header" href="#fields-3">Fields</a></h4>
+<ul>
+<li>
+<p><code>name</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>args</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>kwonlyargs</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>returns</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>docstring</code>: <code>str</code></p>
+</li>
+</ul>
+<h4 id="methods-2"><a class="header" href="#methods-2">Methods</a></h4>
+<pre><code class="language-python">def to_md(self, is_method, extra_signature) -&gt; None
+</code></pre>
+<p>Convert method to markdown.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>is_method</code></li>
+<li><code>extra_signature(Signature)</code></li>
+</ul>
+</div>
+<h3 id="class-arg"><a class="header" href="#class-arg"><code>class Arg:</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="fields-4"><a class="header" href="#fields-4">Fields</a></h4>
+<ul>
+<li>
+<p><code>name</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>type</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>default</code>: <code>str | None</code> = <code>&lt;ast.Constant object at 0x7fde61b33280&gt;</code></p>
+</li>
+</ul>
+</div>
+<h3 id="class-argsvisitorastnodevisitor"><a class="header" href="#class-argsvisitorastnodevisitor"><code>class ArgsVisitor(ast.NodeVisitor):</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="methods-3"><a class="header" href="#methods-3">Methods</a></h4>
+<pre><code class="language-python">def __init__(self) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_arg(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def finish(self, default) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-astfunctionvisitorastnodevisitor"><a class="header" href="#class-astfunctionvisitorastnodevisitor"><code>class AstFunctionVisitor(ast.NodeVisitor):</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="methods-4"><a class="header" href="#methods-4">Methods</a></h4>
+<pre><code class="language-python">def __init__(self, imports) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_FunctionDef(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def finish(self) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-astclassvisitorastnodevisitor"><a class="header" href="#class-astclassvisitorastnodevisitor"><code>class AstClassVisitor(ast.NodeVisitor):</code></a></h3>
+<div style="padding-left: 20px;">
+<p>Visitor for class declarations.</p>
+<h4 id="methods-5"><a class="header" href="#methods-5">Methods</a></h4>
+<pre><code class="language-python">def __init__(self, imports) -&gt; None
+</code></pre>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>imports</code></li>
+</ul>
+<pre><code class="language-python">def visit_ClassDef(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_AnnAssign(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_Decorator(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_FunctionDef(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def finish(self) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-module"><a class="header" href="#class-module"><code>class Module:</code></a></h3>
+<div style="padding-left: 20px;">
+<p>Class to hold module information.</p>
+<h4 id="fields-5"><a class="header" href="#fields-5">Fields</a></h4>
+<ul>
+<li>
+<p><code>name</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>docstring</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>classes</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>functions</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>variables</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>aliases</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>all_exports</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>imports</code>: <code>list</code></p>
+</li>
+</ul>
+<h4 id="methods-6"><a class="header" href="#methods-6">Methods</a></h4>
+<pre><code class="language-python">def resolve_export(self, item) -&gt; str
+</code></pre>
+<p>Resolve an export to a module + item.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>item</code></li>
+</ul>
+<pre><code class="language-python">def resolve_import(self, item) -&gt; (str, str)
+</code></pre>
+<p>Resolve an import to a module + item.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>item(str)</code>: the item to resolve</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li>the module containing the item
+the item queried</li>
+</ul>
+<pre><code class="language-python">def to_md(self) -&gt; None
+</code></pre>
+<p>Convert module to markdown.</p>
+<p><strong>Arguments</strong>:</p>
+</div>
+<h3 id="class-nakedimport"><a class="header" href="#class-nakedimport"><code>class NakedImport:</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="fields-6"><a class="header" href="#fields-6">Fields</a></h4>
+<ul>
+<li><code>module</code>: <code>str</code></li>
+</ul>
+<h4 id="methods-7"><a class="header" href="#methods-7">Methods</a></h4>
+<pre><code class="language-python">def to_md(self) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-fromimport"><a class="header" href="#class-fromimport"><code>class FromImport:</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="fields-7"><a class="header" href="#fields-7">Fields</a></h4>
+<ul>
+<li>
+<p><code>module</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>names</code>: <code>list</code></p>
+</li>
+<li>
+<p><code>relative</code>: <code>int</code></p>
+</li>
+</ul>
+<h4 id="methods-8"><a class="header" href="#methods-8">Methods</a></h4>
+<pre><code class="language-python">def to_md(self) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-typealias"><a class="header" href="#class-typealias"><code>class TypeAlias:</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="fields-8"><a class="header" href="#fields-8">Fields</a></h4>
+<ul>
+<li>
+<p><code>name</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>type</code>: <code>str</code></p>
+</li>
+</ul>
+<h4 id="methods-9"><a class="header" href="#methods-9">Methods</a></h4>
+<pre><code class="language-python">def to_md(self) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-typealiasvisitorastnodevisitor"><a class="header" href="#class-typealiasvisitorastnodevisitor"><code>class TypeAliasVisitor(ast.NodeVisitor):</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="methods-10"><a class="header" href="#methods-10">Methods</a></h4>
+<pre><code class="language-python">def __init__(self) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_AnnAssign(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def finish(self) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-classfield"><a class="header" href="#class-classfield"><code>class ClassField:</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="fields-9"><a class="header" href="#fields-9">Fields</a></h4>
+<ul>
+<li>
+<p><code>name</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>type</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>default</code>: <code>str | None</code></p>
+</li>
+</ul>
+</div>
+<h3 id="class-classfieldvisitorastnodevisitor"><a class="header" href="#class-classfieldvisitorastnodevisitor"><code>class ClassFieldVisitor(ast.NodeVisitor):</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="methods-11"><a class="header" href="#methods-11">Methods</a></h4>
+<pre><code class="language-python">def __init__(self) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_AnnAssign(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def finish(self) -&gt; None
+</code></pre>
+</div>
+<h3 id="class-variable"><a class="header" href="#class-variable"><code>class Variable:</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="fields-10"><a class="header" href="#fields-10">Fields</a></h4>
+<ul>
+<li>
+<p><code>name</code>: <code>str</code></p>
+</li>
+<li>
+<p><code>value</code>: <code>str</code></p>
+</li>
+</ul>
+</div>
+<h3 id="class-astvisitorastnodevisitor"><a class="header" href="#class-astvisitorastnodevisitor"><code>class AstVisitor(ast.NodeVisitor):</code></a></h3>
+<div style="padding-left: 20px;">
+<h4 id="methods-12"><a class="header" href="#methods-12">Methods</a></h4>
+<pre><code class="language-python">def __init__(self, module) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_Assign(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_AnnAssign(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_Import(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_ImportFrom(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_ClassDef(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_FunctionDef(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def visit_Module(self, node) -&gt; None
+</code></pre>
+<pre><code class="language-python">def finish(self) -&gt; None
+</code></pre>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
