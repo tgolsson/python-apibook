@@ -1,5 +1,5 @@
-"""`python-apibook` is a tool that generates markdown documentation
-directly from your Python source code.
+"""`python-apibook` is a tool that generates markdown documentation directly
+from your Python source code.
 
 It uses the `ast` module to parse your code and extract docstrings,
 and then writes the documentation to markdown files. While using the

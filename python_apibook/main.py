@@ -1,6 +1,5 @@
 """Generates markdown from Python docstrings."""
 
-
 import ast
 import io
 import logging
