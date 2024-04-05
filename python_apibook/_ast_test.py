@@ -84,4 +84,4 @@ def test_fields_default():
     assert len(clazz.fields) == 1
     assert clazz.fields[0].name == "cronk"
     assert clazz.fields[0].type == "int"
-    assert clazz.fields[0].default == 10
+    assert clazz.fields[0].default.value == 10
