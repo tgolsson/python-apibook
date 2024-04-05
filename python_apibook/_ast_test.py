@@ -62,3 +62,36 @@ def test_decorator_with_args():
     assert clazz.decorators[0].name == "badonk"
     assert len(clazz.decorators[0].args) == 1
     assert clazz.decorators[0].args[0] == "oh dear"
+
+
+def test_fields():
+    clazz = _parse(
+        dedent(
+            """
+    class Foo:
+        cronk: int
+    """
+        ),
+        AstClassVisitor([]),
+    )
+
+    assert len(clazz.fields) == 1
+    assert clazz.fields[0].name == "cronk"
+    assert clazz.fields[0].type == "int"
+
+
+def test_fields_default():
+    clazz = _parse(
+        dedent(
+            """
+    class Foo:
+        cronk: int = 10
+    """
+        ),
+        AstClassVisitor([]),
+    )
+
+    assert len(clazz.fields) == 1
+    assert clazz.fields[0].name == "cronk"
+    assert clazz.fields[0].type == "int"
+    assert clazz.fields[0].default == 10

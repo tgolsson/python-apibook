@@ -9,7 +9,22 @@ _VISIBLE_FUNCTIONS = ["__init__", "__call__"]
 
 
 @dataclass
+class _Value:
+    value: object
+
+    def __bool__(self):
+        return True
+
+    def __str__(self):
+        return str(self.value)
+
+
+@dataclass
 class Arg:
+    """
+    Information about a function argument.
+    """
+
     name: str
     type: str
     default: str | None = None
@@ -18,6 +33,12 @@ class Arg:
 
 @dataclass
 class Signature:
+    """
+    Class to hold signature information for a function or method.
+
+    Might also be used to hold information about a class constructor, even if those are defined on the class itself.
+    """
+
     args: list
     returns: list
     docstring: str
@@ -51,6 +72,10 @@ def _parse_method_docstring(docs: str) -> Signature:
 
 @dataclass
 class Decorator:
+    """
+    Class to hold decorator information for a class or function.
+    """
+
     name: str
     args: list
     kwargs: dict
@@ -97,6 +122,7 @@ class Class:
             md += "#### Fields\n\n"
             for field in self._visible_fields:
                 default_info = ""
+
                 if field.default:
                     default_info = f" = `{field.default}`"
 

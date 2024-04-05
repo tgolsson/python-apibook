@@ -11,6 +11,7 @@ from .data import (
     NakedImport,
     TypeAlias,
     Variable,
+    _Value,
 )
 
 
@@ -185,7 +186,7 @@ class ClassFieldVisitor(ast.NodeVisitor):
         self._type = str(ast.unparse(node.annotation))
 
         if node.value:
-            self._default = node.value
+            self._default = _Value(node.value.value)
 
     def finish(self):
         return ClassField(self._name, self._type, self._default)
