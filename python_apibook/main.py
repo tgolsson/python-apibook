@@ -139,11 +139,11 @@ def run(root_dir: str, output_dir: str, summary_output_template: str | None):
             newpath = f"{path}.{mod}" if path else mod
             if isinstance(value, dict):
                 if value.pop("__init__", {}):
-                    out_file.write("  " * level + f"- [{mod}]({newpath}.md)\n\n")
+                    out_file.write("  " * level + f"- [`{mod}`]({newpath}.md)\n\n")
 
                 write_toc(out_file, newpath, value, level + 1)
             else:
-                out_file.write("  " * level + f"- [{mod}]({newpath}.md)\n\n")
+                out_file.write("  " * level + f"- [`{mod}`]({newpath}.md)\n\n")
 
     toc_content = io.StringIO()
     write_toc(toc_content, "", toc)
