@@ -9,6 +9,14 @@ _VISIBLE_FUNCTIONS = ["__init__", "__call__"]
 
 
 @dataclass
+class Arg:
+    name: str
+    type: str
+    default: str | None = None
+    docstring: str = None
+
+
+@dataclass
 class Signature:
     args: list
     returns: list
@@ -23,9 +31,9 @@ def _parse_method_docstring(docs: str) -> Signature:
 
     for param in doc.params:
         if "(" in param.arg_name or "." in param.arg_name:
-            args[param.type_name] = param.description
+            args[param.type_name] = Arg(param.type_name, param.arg_name, param.default, param.description)
         else:
-            args[param.arg_name] = param.description
+            args[param.arg_name] = Arg(param.arg_name, param.type_name, param.default, param.description)
 
     if doc.returns:
         returns.append(doc.returns.description)
@@ -110,29 +118,32 @@ class Method:
         """Convert method to markdown."""
 
         arg_string = ", ".join(arg.name for arg in self.args)
+        if self.kwonlyargs:
+            arg_string += ", *" + ", ".join(arg.name for arg in self.kwonlyargs)
         ret_string = f" -> {self.returns}"
         if len(arg_string) + len(self.name) + len(ret_string) > 80:
             arg_string = "\n    " + ",\n    ".join(arg.name for arg in self.args) + "\n"
+            if self.kwonlyargs:
+                arg_string += ",\n    *" + ",\n    ".join(arg.name for arg in self.kwonlyargs) + "\n"
 
         md = "```python\n"
         md += f"def {self.name}("
         md += arg_string
         md += f"){ret_string}\n```\n\n"
-
+        md += '<div style="padding-left: 20px;">\n\n'
         if self.docstring or extra_signature:
             signature = _parse_method_docstring(self.docstring or "")
 
             if signature.docstring:
                 md += f"{signature.docstring}\n\n"
 
-            if self.args or self.kwonlyargs:
+            non_self_args = [arg for arg in self.args if arg.name != "self"]
+            if non_self_args or self.kwonlyargs:
                 md += "**Arguments**:"
                 arg = None
                 all_args = (signature.args or {}) | (extra_signature and extra_signature.args or {})
-                for arg in self.args:
-                    if arg.name == "self":
-                        continue
 
+                def emit_arg(arg):
                     docstring_info = all_args.get(arg.name, None)
 
                     type_info = "`"
@@ -146,11 +157,22 @@ class Method:
                     default_info = ""
                     if arg.default:
                         default_info = f" (_default: {arg.default}_)"
+                    elif docstring_info and docstring_info.default:
+                        default_info = f" (_default: {docstring_info.default}_)"
 
                     desc = ""
-                    if docstring_info:
-                        desc = f": {docstring_info}"
-                    md += f"\n- `{arg.name}{type_info}{desc}{default_info}"
+                    if docstring_info and docstring_info.docstring:
+                        desc = f": {docstring_info.docstring}"
+
+                    return f"\n- `{arg.name}{type_info}{desc}{default_info}"
+
+                for arg in self.args:
+                    if arg.name == "self":
+                        continue
+                    md += emit_arg(arg)
+
+                for arg in self.kwonlyargs:
+                    md += emit_arg(arg)
 
             if signature.returns:
                 md += "\n\n**Returns**:"
@@ -158,14 +180,9 @@ class Method:
                     md += f"\n- {ret}\n"
 
             md += "\n\n"
+
+        md += "</div>\n\n"
         return md
-
-
-@dataclass
-class Arg:
-    name: str
-    type: str
-    default: str | None = None
 
 
 @dataclass
