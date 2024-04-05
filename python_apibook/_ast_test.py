@@ -13,13 +13,11 @@ def _parse(code: str, visitor: ast.NodeVisitor):
 
 def test_decorator_bare():
     clazz = _parse(
-        dedent(
-            """
+        dedent("""
     @dataclass
     class Foo:
         pass
-    """
-        ),
+    """),
         AstClassVisitor([]),
     )
 
@@ -30,31 +28,27 @@ def test_decorator_bare():
 
 def test_decorator_with_kwargs():
     clazz = _parse(
-        dedent(
-            """
+        dedent("""
     @dataclass(frozen=True)
     class Foo:
         pass
-    """
-        ),
+    """),
         AstClassVisitor([]),
     )
 
     assert len(clazz.decorators) == 1
     assert clazz.decorators[0].name == "dataclass"
     assert "frozen" in clazz.decorators[0].kwargs
-    assert clazz.decorators[0].kwargs["frozen"] == True
+    assert clazz.decorators[0].kwargs["frozen"] is True
 
 
 def test_decorator_with_args():
     clazz = _parse(
-        dedent(
-            """
+        dedent("""
     @badonk("oh dear")
     class Foo:
         pass
-    """
-        ),
+    """),
         AstClassVisitor([]),
     )
 
@@ -66,12 +60,10 @@ def test_decorator_with_args():
 
 def test_fields():
     clazz = _parse(
-        dedent(
-            """
+        dedent("""
     class Foo:
         cronk: int
-    """
-        ),
+    """),
         AstClassVisitor([]),
     )
 
@@ -82,12 +74,10 @@ def test_fields():
 
 def test_fields_default():
     clazz = _parse(
-        dedent(
-            """
+        dedent("""
     class Foo:
         cronk: int = 10
-    """
-        ),
+    """),
         AstClassVisitor([]),
     )
 

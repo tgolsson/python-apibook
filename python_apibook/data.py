@@ -21,9 +21,7 @@ class _Value:
 
 @dataclass
 class Arg:
-    """
-    Information about a function argument.
-    """
+    """Information about a function argument."""
 
     name: str
     type: str
@@ -33,10 +31,10 @@ class Arg:
 
 @dataclass
 class Signature:
-    """
-    Class to hold signature information for a function or method.
+    """Class to hold signature information for a function or method.
 
-    Might also be used to hold information about a class constructor, even if those are defined on the class itself.
+    Might also be used to hold information about a class constructor,
+    even if those are defined on the class itself.
     """
 
     args: list
@@ -72,9 +70,7 @@ def _parse_method_docstring(docs: str) -> Signature:
 
 @dataclass
 class Decorator:
-    """
-    Class to hold decorator information for a class or function.
-    """
+    """Class to hold decorator information for a class or function."""
 
     name: str
     args: list
