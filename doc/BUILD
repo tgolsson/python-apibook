@@ -4,14 +4,14 @@ resource(
 )
 
 pex_binary(
-    name="apidoc",
+    name="apibook",
     entry_point="python_apibook.cli:main",
     dependencies=["//python_apibook/cli.py"],
 )
 
 adhoc_tool(
-    name="build-apidoc",
-    runnable=":apidoc",
+    name="build-apibook",
+    runnable=":apibook",
     args=["../python_apibook", "src", "--summary-template-file", "SUMMARY.tmpl"],
     execution_dependencies=[
         ":template",
@@ -26,6 +26,6 @@ md_book(
     sources=["book.toml", "src/*.md"],
     dependencies=[
         "//:readme",
-        ":build-apidoc",
+        ":build-apibook",
     ],
 )

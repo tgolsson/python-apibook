@@ -1,7 +1,7 @@
 [book]
 title = "python-apibook"
 authors = ["Tom Solberg <me@sbg.dev"]
-description = "Documentation for the python-apidoc package"
+description = "Documentation for the python-apibook package"
 
 [rust]
 edition = "2021"
@@ -16,7 +16,7 @@ create-missing = false
 
 [output.html]
 no-section-label = true
-git-repository-url = "https://github.com/tgolsson/python-apidoc"
+git-repository-url = "https://github.com/tgolsson/python-apibook"
 
 [output.html.search]
 limit-results = 15
