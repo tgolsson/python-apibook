@@ -4,6 +4,7 @@ from .data import (
     Arg,
     Class,
     ClassField,
+    Decorator,
     FromImport,
     Method,
     Module,
@@ -73,6 +74,35 @@ class AstVisitor(ast.NodeVisitor):
         )
 
 
+class DecoratorVisitor(ast.NodeVisitor):
+    def __init__(self):
+        self._is_call = False
+        self._name = None
+        self._args = None
+        self._kwargs = None
+
+    def visit_Name(self, node):
+        self._name = node.id
+
+    def visit_Attribute(self, node):
+        self._name = ast.unparse(node)
+
+    def visit_Call(self, node):
+        self._is_call = True
+
+        self._name = ast.unparse(node.func)
+        self._args = [n.value for n in node.args]
+        self._kwargs = {kw.arg: kw.value.value for kw in node.keywords}
+
+    def finish(self):
+        return Decorator(
+            self._name,
+            self._args,
+            self._kwargs,
+            is_call=self._is_call,
+        )
+
+
 class AstClassVisitor(ast.NodeVisitor):
     """Visitor for class declarations."""
 
@@ -93,6 +123,14 @@ class AstClassVisitor(ast.NodeVisitor):
         self._bases = bases
 
         self._docstring = ast.get_docstring(node)
+        decorators = []
+
+        for decorator in node.decorator_list:
+            visitor = DecoratorVisitor()
+            visitor.visit(decorator)
+            decorators.append(visitor.finish())
+
+        self._decorators = decorators
 
         self.generic_visit(node)
 
@@ -101,17 +139,13 @@ class AstClassVisitor(ast.NodeVisitor):
         visitor.visit(node)
         self._fields.append(visitor.finish())
 
-    def visit_Decorator(self, node):
-        self._decorators.append(node.id)
-        self.generic_visit(node)
-
     def visit_FunctionDef(self, node):
         visitor = AstFunctionVisitor(self._imports)
         visitor.visit(node)
         self._methods.append(visitor.finish())
 
     def finish(self):
-        return Class(self._name, self._bases, self._methods, self._fields, self._docstring)
+        return Class(self._name, self._bases, self._decorators, self._methods, self._fields, self._docstring)
 
 
 class ArgsVisitor(ast.NodeVisitor):

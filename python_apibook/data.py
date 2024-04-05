@@ -50,11 +50,22 @@ def _parse_method_docstring(docs: str) -> Signature:
 
 
 @dataclass
+class Decorator:
+    name: str
+    args: list
+    kwargs: dict
+
+    is_call: bool = False
+    is_property: bool = False
+
+
+@dataclass
 class Class:
     """Class to hold class information."""
 
     name: str
     bases: list
+    decorators: list
     methods: list
     fields: list
     docstring: str
