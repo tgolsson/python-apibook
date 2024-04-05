@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10
+        python-version: '3.10'
 
     - name: Initialize Pants
       uses: pantsbuild/actions/init-pants@main
@@ -41,12 +41,12 @@ jobs:
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10
+        python-version: '3.10'
 
     - name: Initialize Pants
       uses: pantsbuild/actions/init-pants@main
       with:
-        gha-cache-key: cache1-package-py3.9-pants-package
+        gha-cache-key: cache1-package-py3.10-pants-package
         named-caches-hash: ${{ hashFiles('locks/*.lock') }}
 
     - name: Package all targets
@@ -61,12 +61,12 @@ jobs:
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10
+        python-version: '3.10'
 
     - name: Initialize Pants
       uses: pantsbuild/actions/init-pants@main
       with:
-        gha-cache-key: cache1-package-py3.9-pants-lint
+        gha-cache-key: cache1-package-py3.10-pants-lint
         named-caches-hash: ${{ hashFiles('locks/*.lock') }}
 
     - name: Run linters on all targets
@@ -81,12 +81,12 @@ jobs:
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10
+        python-version: '3.10'
 
     - name: Initialize Pants
       uses: pantsbuild/actions/init-pants@main
       with:
-        gha-cache-key: cache1-package-py3.9-pants-lint
+        gha-cache-key: cache1-package-py3.10-pants-lint
         named-caches-hash: ${{ hashFiles('locks/*.lock') }}
 
     - name: Validate that tailor files are up to date

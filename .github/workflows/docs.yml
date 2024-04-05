@@ -31,12 +31,12 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
-          python-version: 3.10
+          python-version: '3.10'
 
       - name: Initialize Pants
         uses: pantsbuild/actions/init-pants@main
         with:
-          gha-cache-key: cache1-package-py3.9-pants-docs
+          gha-cache-key: cache1-package-py3.10-pants-docs
           named-caches-hash: ${{ hashFiles('locks/*.lock') }}
 
       - name: Build docs
