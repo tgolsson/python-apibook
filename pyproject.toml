@@ -21,6 +21,9 @@ classifiers = [
 Repository = "https://github.com/tgolsson/python-apibook"
 Changelog = "https://github.com/tgolsson/python-apibook/tree/main/CHANGELOG.md"
 
+[project.scripts]
+python-apibook = "python_apibook.cli:main"
+
 [tool.pdm.build]
 includes = ["python_apibook"]
 excludes = ["**/BUILD"]

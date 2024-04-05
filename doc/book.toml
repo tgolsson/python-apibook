@@ -1,0 +1,22 @@
+[book]
+title = "python-apibook"
+authors = ["Tom Solberg <me@sbg.dev"]
+description = "Documentation for the python-apidoc package"
+
+[rust]
+edition = "2021"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[preprocessor.index]
+
+[preprocessor.links]
+
+[output.html]
+no-section-label = true
+git-repository-url = "https://github.com/tgolsson/python-apidoc"
+
+[output.html.search]
+limit-results = 15
