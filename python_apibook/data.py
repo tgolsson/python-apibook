@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 import docstring_parser
 
+from .metadata import Signature
+
 logger = logging.getLogger(__name__)
 
 _VISIBLE_FUNCTIONS = ["__init__", "__call__"]
@@ -16,7 +18,7 @@ class _Value:
         return True
 
     def __str__(self):
-        return str(self.value)
+        return repr(self.value)
 
 
 @dataclass
@@ -27,19 +29,6 @@ class Arg:
     type: str
     default: str | None = None
     docstring: str = None
-
-
-@dataclass
-class Signature:
-    """Class to hold signature information for a function or method.
-
-    Might also be used to hold information about a class constructor,
-    even if those are defined on the class itself.
-    """
-
-    args: list
-    returns: list
-    docstring: str
 
 
 def _parse_method_docstring(docs: str) -> Signature:
@@ -117,12 +106,15 @@ class Class:
         if self._visible_fields:
             md += "#### Fields\n\n"
             for field in self._visible_fields:
-                default_info = ""
+                type_info = ""
+                if field.type:
+                    type_info = f": `{field.type}`"
 
+                default_info = ""
                 if field.default:
                     default_info = f" = `{field.default}`"
 
-                md += f"- `{field.name}`: `{field.type}`{default_info}\n\n"
+                md += f"- `{field.name}`{type_info}{default_info}\n\n"
 
         if self._visible_methods:
             md += "#### Methods\n\n"

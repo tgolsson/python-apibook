@@ -1,4 +1,5 @@
 import ast
+import logging
 
 from .data import (
     Arg,
@@ -13,6 +14,8 @@ from .data import (
     Variable,
     _Value,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class AstVisitor(ast.NodeVisitor):
@@ -140,6 +143,11 @@ class AstClassVisitor(ast.NodeVisitor):
         visitor.visit(node)
         self._fields.append(visitor.finish())
 
+    def visit_Assign(self, node):
+        visitor = ClassFieldVisitor()
+        visitor.visit(node)
+        self._fields.append(visitor.finish())
+
     def visit_FunctionDef(self, node):
         visitor = AstFunctionVisitor(self._imports)
         visitor.visit(node)
@@ -186,7 +194,39 @@ class ClassFieldVisitor(ast.NodeVisitor):
         self._type = str(ast.unparse(node.annotation))
 
         if node.value:
-            self._default = _Value(node.value.value)
+            match node.value:
+                case ast.Constant(value, _):
+                    self._default = _Value(value)
+                case ast.Name(id, _):
+                    self._default = _Value(id)
+                case ast.Call(_):
+                    self._default = _Value(ast.unparse(node.value))
+
+                case ast.Attribute(_, _, _):
+                    self._default = _Value(ast.unparse(node.value))
+
+                case _:
+                    logger.warning(f"Unknown default value {ast.dump(node.value)}")
+
+    def visit_Assign(self, node):
+        # NOTE[TSolberg]: This should generate a list of fields...
+        self._name = node.targets[0].id
+        self._type = None
+
+        if node.value:
+            match node.value:
+                case ast.Constant(value, _):
+                    self._default = _Value(value)
+                case ast.Name(id, _):
+                    self._default = _Value(id)
+                case ast.Call(_):
+                    self._default = _Value(ast.unparse(node.value))
+
+                case ast.Attribute(_, _, _):
+                    self._default = _Value(ast.unparse(node.value))
+
+                case _:
+                    logger.warning(f"Unknown default value {ast.dump(node.value)}")
 
     def finish(self):
         return ClassField(self._name, self._type, self._default)
