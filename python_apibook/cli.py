@@ -72,7 +72,12 @@ class Args:
         )
 
         args = parser.parse_args()
-        return Args(args.root_dir, args.output_dir, args.summary_template_file, args.verbose)
+        return Args(
+            args.root_dir,
+            args.output_dir,
+            args.summary_template_file,
+            args.verbose,
+        )
 
 
 def main():
@@ -84,7 +89,7 @@ def main():
 
     try:
         run(args.root_dir, args.output_dir, args.summary_template_file)
-    except:
+    except:  # noqa: E722
         if args.verbose:
             console.print_exception(show_locals=True)
         else:
