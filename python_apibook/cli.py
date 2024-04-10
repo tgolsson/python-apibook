@@ -37,9 +37,12 @@ import argparse
 import logging
 from dataclasses import dataclass
 
+from rich.console import Console
 from rich.logging import RichHandler
 
 from .main import run
+
+console = Console()
 
 
 @dataclass
@@ -49,6 +52,7 @@ class Args:
     root_dir: str
     output_dir: str
     summary_template_file: str | None = None
+    verbose: bool = False
 
     def parse() -> "Args":
         """Parse command line arguments."""
@@ -60,16 +64,36 @@ class Args:
             help="Path to a file containing a summary template.",
             default=None,
         )
+        parser.add_argument(
+            "-v",
+            "--verbose",
+            action="store_true",
+            help="Enable verbose logging.",
+        )
+
         args = parser.parse_args()
-        return Args(args.root_dir, args.output_dir, args.summary_template_file)
+        return Args(
+            args.root_dir,
+            args.output_dir,
+            args.summary_template_file,
+            args.verbose,
+        )
 
 
 def main():
-    FORMAT = "%(message)s"
-    logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
-
     args = Args.parse()
-    run(args.root_dir, args.output_dir, args.summary_template_file)
+    FORMAT = "%(message)s"
+
+    level = "DEBUG" if args.verbose else "INFO"
+    logging.basicConfig(level=level, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
+
+    try:
+        run(args.root_dir, args.output_dir, args.summary_template_file)
+    except:  # noqa: E722
+        if args.verbose:
+            console.print_exception(show_locals=True)
+        else:
+            raise
 
 
 if __name__ == "__main__":
