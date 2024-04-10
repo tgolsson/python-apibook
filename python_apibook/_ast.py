@@ -143,6 +143,11 @@ class AstClassVisitor(ast.NodeVisitor):
         visitor.visit(node)
         self._fields.append(visitor.finish())
 
+    def visit_Assign(self, node):
+        visitor = ClassFieldVisitor()
+        visitor.visit(node)
+        self._fields.append(visitor.finish())
+
     def visit_FunctionDef(self, node):
         visitor = AstFunctionVisitor(self._imports)
         visitor.visit(node)
