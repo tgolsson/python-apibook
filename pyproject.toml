@@ -15,7 +15,7 @@ classifiers = [
   "Programming Language :: Python",
   "Topic :: Software Development :: Build Tools",
 ]
-
+requires-python = ">=3.9"
 
 [project.urls]
 Repository = "https://github.com/tgolsson/python-apibook"
@@ -29,7 +29,7 @@ includes = ["python_apibook"]
 excludes = ["**/BUILD"]
 
 [build-system]
-requires = ["pdm-backend>=1.0.0"]
+requires = ["pdm-backend==2.1.8"]
 build-backend = "pdm.backend"
 
 [tool.isort]
