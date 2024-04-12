@@ -1,6 +1,6 @@
 """Main entrypoint for the CLI usage.
 
-This module provides a command line interface for the `python_apibook` package. The CLI
+This module provides a command line interface for the `apibook` package. The CLI
  accepts the following arguments:
 
 - `root_dir`: the root directory to search for Python files
@@ -9,7 +9,7 @@ This module provides a command line interface for the `python_apibook` package. 
 
 Example usage:
 ```bash
-python -m python_apibook.cli my_package/ doc/src --summary-template-file doc/SUMMARY.tmpl
+python -m apibook.cli my_package/ doc/src --summary-template-file doc/SUMMARY.tmpl
 ```
 
 Running the above command will generate markdown files for all Python files in the `my_package`, and
