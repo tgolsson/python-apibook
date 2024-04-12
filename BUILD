@@ -9,10 +9,10 @@ python_distribution(
     name="package",
     dependencies=[
         ":package_data",
-        "//python_apibook:python_apibook",
+        "//apibook:apibook",
     ],
     provides=python_artifact(
-        name="python-apibook",
+        name="apibook",
         version="0.1.0",
         long_description_content_type="markdown",
     ),
@@ -20,7 +20,7 @@ python_distribution(
     repositories=["@pypi"],
     entry_points={
         "python-apibook": {
-            "my-script": "python_apibook.cli:main",
+            "my-script": "apibook.cli:main",
         }
     },
 )

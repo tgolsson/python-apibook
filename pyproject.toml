@@ -1,5 +1,5 @@
 [project]
-name = "python-apibook"
+name = "apibook"
 description = "API documentation generator for MdBook"
 version = "0.1.0"
 authors = [{ name = "Tom Solberg", email = "me@sbg.dev" }]
@@ -20,10 +20,10 @@ Repository = "https://github.com/tgolsson/python-apibook"
 Changelog = "https://github.com/tgolsson/python-apibook/tree/main/CHANGELOG.md"
 
 [project.scripts]
-python-apibook = "python_apibook.cli:main"
+python-apibook = "apibook.cli:main"
 
 [tool.pdm.build]
-includes = ["python_apibook"]
+includes = ["apibook"]
 excludes = ["**/BUILD"]
 
 [build-system]
@@ -33,7 +33,7 @@ build-backend = "pdm.backend"
 [tool.isort]
 profile = "black"
 
-known_first_party = ["python_apibook"]
+known_first_party = ["apibook"]
 line_length = 100
 include_trailing_comma = true
 
