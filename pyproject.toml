@@ -3,17 +3,15 @@ name = "python-apibook"
 description = "API documentation generator for MdBook"
 version = "0.1.0"
 authors = [{ name = "Tom Solberg", email = "me@sbg.dev" }]
-
 dependencies = ["docstring_parser", "rich"]
-
 readme = "README.md"
 license = { file = "LICENSE-MIT.txt" }
 keywords = ["mdbook", "apidoc", "documentation", "markdown"]
-
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Topic :: Software Development :: Build Tools",
+  "Topic :: Software Development :: Documentation",
+  "Topic :: Text Processing :: Markup :: Markdown",
 ]
 requires-python = ">=3.9"
 
