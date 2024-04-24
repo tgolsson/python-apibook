@@ -271,29 +271,38 @@ class Module:
             the item queried
         """
 
-        for import_ in self.imports:
-            if isinstance(import_, FromImport):
-                if item in import_.names:
-                    if import_.relative == 0:
-                        return import_.module, item
+        for import_ in self.imports + self.classes + self.variables:
+            match import_:
+                case FromImport(module, names, relative):
+                    if item in names:
+                        if relative == 0:
+                            return module, item
 
-                    # resolve relative imports.
-                    # If we are in foo.bar.baz and we import from .qux import item
-                    # we need to resolve to foo.bar.qux.item
-                    if import_.module is None:
+                        # resolve relative imports.
+                        # If we are in foo.bar.baz and we import from .qux import item
+                        # we need to resolve to foo.bar.qux.item
+                        if module is None:
+                            return self.name, item
+
+                        parts = self.name.split(".")
+                        parts = parts[:-relative]
+                        parts.append(module)
+
+                        return ".".join(parts), item
+
+                case NakedImport(module):
+                    if item == module:
                         return self.name, item
 
-                    parts = self.name.split(".")
-                    parts = parts[: -import_.relative]
-                    parts.append(import_.module)
+                case Variable(name):
+                    if item == name:
+                        return self.name, item
 
-                    return ".".join(parts), item
+                case Class(name):
+                    if item == name:
+                        return self.name, name
 
-            elif isinstance(import_, NakedImport):
-                if item == import_.module:
-                    return item
-
-        logger.warning(f"Could not resolve import {item} from {self.name}")
+        logger.warning(f"Could not resolve import {item} from {self}")
         return None
 
     @property

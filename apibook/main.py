@@ -46,20 +46,23 @@ def fixup_reexports(root_module: str, docs: dict[str, Module]):
     for mod, content in docs.items():
         logger.info("Fixing up reexports for '%s'", mod)
         for alias in content.all_exports:
-            mod, item = content.resolve_import(alias)
+            module, item = content.resolve_import(alias)
 
-            if docs.get(f"{mod}.{item}"):
+            if module == mod:
+                continue  # Don't reexport from the same module
+
+            if docs.get(f"{module}.{item}"):
                 continue
 
-            for candidate in [mod, f"{mod}.__init__"]:
+            for candidate in [module, f"{module}.__init__"]:
                 source_doc = docs.get(candidate)
 
-                logger.info(f"Checking {candidate} for {item} - {source_doc}")
+                logger.info(f"Checking {candidate} for {item}")
 
                 if source_doc:
-                    print(f"Resolving {source_doc.name}.{item}")
+                    logger.info(f"Resolving {source_doc.name}.{item}")
                     found_item = source_doc.resolve_export(item)
-                    logger.info(f"For {mod}.{item} found {found_item}")
+                    logger.debug(f"For {mod}.{item} found {found_item}")
 
                     match found_item:
                         case Class(_, _, _, _):
@@ -83,7 +86,7 @@ def fixup_reexports(root_module: str, docs: dict[str, Module]):
             else:
                 known_modules = "\t" + "\n\t".join(f'"{k}"' for k in docs.keys())
                 raise ValueError(
-                    f"Could not find module {mod} or {mod}.__init__ - known modules:\n{known_modules}"
+                    f"Could not find module {module} or {module}.__init__ - known modules:\n{known_modules}"
                 )
 
 
