@@ -1,7 +1,7 @@
 [project]
 name = "apibook"
 description = "API documentation generator for MdBook"
-version = "0.1.0"
+version = "0.1.1"
 authors = [{ name = "Tom Solberg", email = "me@sbg.dev" }]
 dependencies = ["docstring_parser", "rich"]
 readme = "README.md"
