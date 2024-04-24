@@ -13,7 +13,7 @@ python_distribution(
     ],
     provides=python_artifact(
         name="apibook",
-        version="0.1.1",
+        version="0.1.2",
         long_description_content_type="markdown",
     ),
     long_description_path="README.md",

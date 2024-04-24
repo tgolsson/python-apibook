@@ -92,8 +92,8 @@ def main():
     except:  # noqa: E722
         if args.verbose:
             console.print_exception(show_locals=True)
-        else:
-            raise
+
+        raise
 
 
 if __name__ == "__main__":
